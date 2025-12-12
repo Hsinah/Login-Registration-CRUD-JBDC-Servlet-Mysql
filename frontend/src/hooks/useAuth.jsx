@@ -25,50 +25,65 @@ export const AuthProvider = ({ children }) => {
     }
   }, [user]);
 
-  // --- Mock API Calls (Replace with actual backend calls later) ---
-
-  // NOTE: In a real app, these functions would make an HTTP request (e.g., fetch/axios)
-  // to your Java backend, receive a token/user object, and set the state.
     
-  const login = async (username, password) => {
-      // URLSearchParams creates the application/x-www-form-urlencoded body
-      const data = new URLSearchParams();
+// useAuth.jsx
 
-      data.append('username', username);
-      data.append('password', password);
-      //data.append('login', 'login');
+const login = async (username, password) => {
+    const data = new URLSearchParams();
+    data.append("username", username);
+    data.append("password", password);
 
-      try {
-        const response = await fetch('/api/login', {  
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: data
-        });
+    let response; // Declare response outside try-catch to access in catch block
+    let text = "";
+    
+    try {
+      response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: data,
+      });
 
-        // Check if the HTTP status is successful (200-299)
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+      text = await response.text(); // Always read raw body first
+
+      // --- Attempt to parse response body regardless of success status ---
+      let result = {};
+      if (text) {
+        try {
+          result = JSON.parse(text);
+        } catch (err) {
+          console.error("JSON parse error:", err);
+          // If parsing fails, fall back to default error handling
         }
-
-        const result = await response.json();
-        console.log("Backend Response:", result);
-        
-        if (result.success) {
-          const mockUser = { id: 1, username, email: `${username}@example.com`, role: 'user' };
-          // setUser(mockUser); // Re-enable this when using a real state
-          return { success: true, message: "Login successful!" };
-        } else {
-          return { success: false, message: "Login failed!" };        
-        }
-        
-      } catch (error) {
-        console.error("Login failed:", error);
-        // This will catch network errors AND HTTP status errors
-        return { success: false, message: "Network error or server unavailable." };
       }
-    };
+
+      // If HTTP status is NOT OK (4xx or 5xx)
+      if (!response.ok) {
+        // Return server's message if it sent one, otherwise a generic HTTP error
+        const message = result.message || `HTTP error! Status: ${response.status}`;
+        console.error("Login failed (HTTP status not OK):", message);
+        return { success: false, message: message };
+      }
+
+      // If HTTP status IS OK (2xx) and we have a result
+      console.log("Backend Response:", result);
+      if (result.success) {
+        return { success: true, message: "Login successful!" };
+      } else {
+        // Handle successful HTTP status but failed login (e.g., wrong password)
+        return { success: false, message: result.message || "Login failed!" };
+      }
+
+    } catch (error) {
+      // This handles network errors (fetch failure)
+      console.error("Login failed (Network Error):", error);
+      return { success: false, message: "Network error or server unavailable." };
+    }
+};
+
+// ... (rest of useAuth.jsx)
+
 
   const logout = () => {
     setUser(null);
