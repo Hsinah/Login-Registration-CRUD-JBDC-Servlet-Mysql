@@ -1,0 +1,75 @@
+/* General styling for the Login container */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the form horizontally */
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* Styling for the main heading */
+.login-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 5px;
+}
+
+/* Styling for the form element */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Increase gap slightly for better spacing */
+    max-width: 350px; /* Slightly wider max-width */
+    width: 100%; /* Ensure it takes up available width */
+    padding: 25px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+}
+
+/* Styling for input fields (text and password) */
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.login-form input[type="text"]:focus,
+.login-form input[type="password"]:focus {
+    border-color: #007bff;
+    outline: none; /* Remove default focus outline */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+/* Styling for the submit button */
+.login-form button[type="submit"] {
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.login-form button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.login-form button[type="submit"]:active {
+    transform: scale(0.99);
+}
+
+/* Styling for the error message */
+.error-message {
+    color: #dc3545; /* A standard red for error messages */
+    font-size: 14px;
+    margin-top: -5px; /* Pull it closer to the input/button area */
+    text-align: center;
+}
