@@ -62,4 +62,11 @@ public class Validation {
 
         out.flush();
     }
+
+
+    public void RegisterValidation(HttpServletRequest request,HttpServletResponse response) throws Exception{
+        Class.forName("com.mysql.cj.jdbc.Driver");
+
+        
+    }
 }

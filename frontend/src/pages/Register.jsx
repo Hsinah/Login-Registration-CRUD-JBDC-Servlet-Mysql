@@ -7,9 +7,12 @@ import './Register.css';
 
 const Register = () => {
   const [username, setUsername] = useState('');
+  const [name,setName] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
+  const [country,setCountry] = useState('');
+  const [dob,setDOB] = useState('');
   const { register } = useAuth();
   const navigate = useNavigate();
 
@@ -17,7 +20,7 @@ const Register = () => {
     e.preventDefault();
     setStatusMessage('');
     
-    const result = await register({ username, password, email });
+    const result = await register({ username, password, email,name,country,dob });
 
     if (result.success) {
       setStatusMessage('✅ Registration successful! Redirecting to login...');
@@ -47,10 +50,31 @@ const Register = () => {
             required 
         />
         <input 
+          type='text'
+          placeholder='Name'
+          value = {name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          />
+        <input 
             type="email" 
             placeholder="Email" 
             value={email} 
             onChange={(e) => setEmail(e.target.value)} 
+            required 
+        />
+        <input 
+            type="text" 
+            placeholder="Country" 
+            value={country} 
+            onChange={(e) => setCountry(e.target.value)} 
+            required 
+        />
+        <input 
+            type="text" 
+            placeholder="DOB" 
+            value={dob} 
+            onChange={(e) => setDOB(e.target.value)} 
             required 
         />
         <input 
